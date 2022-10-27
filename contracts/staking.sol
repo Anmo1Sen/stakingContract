@@ -64,7 +64,8 @@ contract Staking is ReentrancyGuard {
         }
         return
             s_rewardPerTokenStored +
-            (((block.timestamp - s_lastUpdateTime) * REWARD_RATE * 1e18) / s_totalSupply);
+            (((block.timestamp - s_lastUpdateTime) * REWARD_RATE * 1e18) / s_totalSupply     //  for first time if for 1 sec total supply = supplyed by i user = 100,
+                                                                                              //then rewardpertokenstored = 0 + reward earned for first sec = 1x100x1e18)%100 = 1e18   
     }
 
     /**
@@ -72,7 +73,7 @@ contract Staking is ReentrancyGuard {
      */
     function earned(address account) public view returns (uint256) {
         return
-            ((s_balances[account] * (rewardPerToken() - s_userRewardPerTokenPaid[account])) /
+            ((s_balances[account] * (rewardPerToken() - s_userRewardPerTokenPaid[account]))/        // 100x1e18/1e18+0
                 1e18) + s_rewards[account];
     }
 
